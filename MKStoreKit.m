@@ -115,7 +115,11 @@ static NSDictionary *errorDictionary;
 #pragma mark Helpers
 
 + (NSDictionary *)configs {
-    return [NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"MKStoreKitConfigs.plist"]];
+	static NSDictionary *config = nil;
+	if (!config) {
+		config = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"MKStoreKitConfigs" ofType:@"plist"]];
+	}
+	return config;
 }
 
 
@@ -172,6 +176,14 @@ static NSDictionary *errorDictionary;
     self.purchaseRecord[consumableId] = currentConsumableCount;
     [self savePurchaseRecord];
     return currentConsumableCount;
+}
+
+- (NSNumber *)addCredits:(NSNumber *)creditCountToAdd identifiedByConsumableIdentifier:(NSString *)consumableId {
+	NSNumber *currentConsumableCount = self.purchaseRecord[consumableId];
+	currentConsumableCount = @([currentConsumableCount doubleValue] + [creditCountToAdd doubleValue]);
+	self.purchaseRecord[consumableId] = currentConsumableCount;
+	[self savePurchaseRecord];
+	return currentConsumableCount;
 }
 
 - (void)setDefaultCredits:(NSNumber *)creditCount forConsumableIdentifier:(NSString *)consumableId {
