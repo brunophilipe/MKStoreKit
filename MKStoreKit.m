@@ -430,13 +430,15 @@ static NSDictionary *errorDictionary;
                 NSDictionary *availableConsumables = [MKStoreKit configs][@"Consumables"];
                 NSArray *consumables = [availableConsumables allKeys];
                 if ([consumables containsObject:transaction.payment.productIdentifier]) {
-                    
-                    NSDictionary *thisConsumable = availableConsumables[transaction.payment.productIdentifier];
-                    NSString *consumableId = thisConsumable[@"ConsumableId"];
-                    NSNumber *consumableCount = thisConsumable[@"ConsumableCount"];
-                    NSNumber *currentConsumableCount = self.purchaseRecord[consumableId];
-                    consumableCount = @([consumableCount doubleValue] + [currentConsumableCount doubleValue]);
-                    self.purchaseRecord[consumableId] = consumableCount;
+					id consumableData = availableConsumables[transaction.payment.productIdentifier];
+					
+					if ([consumableData isKindOfClass:[NSDictionary class]]) {
+						[self addCredits:consumableData[@"ConsumableCount"] identifiedByConsumableIdentifier:consumableData[@"ConsumableId"]];
+					} else if ([consumableData isKindOfClass:[NSArray class]]) {
+						for (NSDictionary *thisConsumable in consumableData) {
+							[self addCredits:thisConsumable[@"ConsumableCount"] identifiedByConsumableIdentifier:thisConsumable[@"ConsumableId"]];
+						}
+					}
                 } else {
                     // non-consumable or subscriptions
                     // subscriptions will eventually contain the expiry date after the receipt is validated during the next run
