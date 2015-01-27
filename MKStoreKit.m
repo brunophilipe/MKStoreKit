@@ -37,6 +37,7 @@
 //	if you are re-publishing after editing, please retain the above copyright notices
 
 #import "MKStoreKit.h"
+#import "SKProduct+PriceAsString.h"
 
 @import StoreKit;
 NSString *const kMKStoreKitProductsAvailableNotification = @"com.mugunthkumar.mkstorekit.productsavailable";
@@ -195,6 +196,21 @@ static NSDictionary *errorDictionary;
         self.purchaseRecord[consumableId] = creditCount;
         [self savePurchaseRecord];
     }
+}
+
+- (NSString*)localizedPriceAsStringForProductId:(NSString*)productId
+{
+	NSString *priceAsString = nil;
+	
+	for (SKProduct *product in self.availableProducts)
+	{
+		if ([product.productIdentifier isEqualToString:productId]) {
+			priceAsString = [product priceAsString];
+			break;
+		}
+	}
+	
+	return priceAsString;
 }
 
 #pragma mark -

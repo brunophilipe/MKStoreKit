@@ -155,6 +155,8 @@ extern NSString *const kMKStoreKitSubscriptionExpiredNotification;
  */
 - (void)restorePurchases;
 
+- (NSString*)localizedPriceAsStringForProductId:(NSString*)productId;
+
 /*!
  *  @abstract Initiates payment request for a In App Purchasable Product
  *
