@@ -229,6 +229,8 @@ extern NSString *const kMKStoreKitSubscriptionExpiredNotification;
  */
 - (NSNumber *)consumeCredits:(NSNumber *)creditCountToConsume identifiedByConsumableIdentifier:(NSString *)consumableId;
 
+- (NSNumber *)addCredits:(NSNumber *)creditCountToAdd identifiedByConsumableIdentifier:(NSString *)consumableId;
+
 /*!
  *  @abstract This method sets the default credits (managed by MKStoreKit) for a given consumable
  *

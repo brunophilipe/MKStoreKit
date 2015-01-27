@@ -174,6 +174,7 @@ static NSDictionary *errorDictionary;
     NSNumber *currentConsumableCount = self.purchaseRecord[consumableId];
     currentConsumableCount = @([currentConsumableCount doubleValue] - [creditCountToConsume doubleValue]);
     self.purchaseRecord[consumableId] = currentConsumableCount;
+	NSLog(@"New balance for consumable (%@): %ld", consumableId, currentConsumableCount.integerValue);
     [self savePurchaseRecord];
     return currentConsumableCount;
 }
@@ -182,6 +183,7 @@ static NSDictionary *errorDictionary;
 	NSNumber *currentConsumableCount = self.purchaseRecord[consumableId];
 	currentConsumableCount = @([currentConsumableCount doubleValue] + [creditCountToAdd doubleValue]);
 	self.purchaseRecord[consumableId] = currentConsumableCount;
+	NSLog(@"New balance for consumable (%@): %ld", consumableId, currentConsumableCount.integerValue);
 	[self savePurchaseRecord];
 	return currentConsumableCount;
 }
