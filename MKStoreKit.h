@@ -155,6 +155,9 @@ extern NSString *const kMKStoreKitSubscriptionExpiredNotification;
  */
 - (void)restorePurchases;
 
+/*!
+ *  @abstract Retrieves the product price and builds a string with the price in the current user locale.
+ */
 - (NSString*)localizedPriceAsStringForProductId:(NSString*)productId;
 
 /*!

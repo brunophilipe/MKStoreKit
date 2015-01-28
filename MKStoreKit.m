@@ -63,7 +63,7 @@ static NSDictionary *errorDictionary;
 #pragma mark -
 #pragma mark Singleton Methods
 
-+ (MKStoreKit *)sharedKit {
++ (instancetype)sharedKit {
     static MKStoreKit *_sharedKit;
     if(!_sharedKit) {
         static dispatch_once_t oncePredicate;
@@ -98,6 +98,11 @@ static NSDictionary *errorDictionary;
     return self;
 }
 
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark -
 #pragma mark Initializer
 
@@ -128,8 +133,9 @@ static NSDictionary *errorDictionary;
 #pragma mark Store File Management
 
 - (NSString *)purchaseRecordFilePath {
-    NSString *documentDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    return [documentDirectory stringByAppendingPathComponent:@"purchaserecord.plist"];
+    NSString *documentDirectory = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;
+	NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+    return [documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@/store.data", appName]];
 }
 
 - (void)restorePurchaseRecord {
